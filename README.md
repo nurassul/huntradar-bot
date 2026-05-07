@@ -7,6 +7,7 @@ HuntRadar Bot - это микросервисная система, котора
 - отправляет подходящие вакансии в Telegram.
 
 Проект состоит из трех основных микросервисов (`parser-service`, `matcher-service`, `bot-service`) и инфраструктуры (`PostgreSQL`, `Redis`, `Kafka`).
+Проект для Final Exam for Introduction to Programming 2 course
 
 ## 1. Архитектура
 
@@ -296,22 +297,4 @@ docker compose up --build
 - Docker Compose (локальная оркестрация)
 
 ---
-
-## 9. Важные особенности и ограничения
-
-- Повторы вакансий ограничены TTL Redis (7 дней), но между разными пользователями одна вакансия может быть релевантна и отправляться каждому отдельно через `user_ids`.
-- `auto_offset_reset=earliest` в consumer'ах значит, что при новой consumer-group может читаться история топика.
-- `save_user_query(...)` всегда деактивирует предыдущие запросы пользователя, оставляя один активный контекст поиска.
-- `toggle_notifications(...)` изменяет `is_active` у всех запросов пользователя сразу.
-
----
-
-## 10. Идеи для улучшений
-
-- Добавить DLQ (dead-letter topic) для невалидных сообщений.
-- Добавить idempotency-key на уровне отправки в Telegram.
-- Перенести словари скиллов в внешнюю конфигурацию (JSON/YAML + hot reload).
-- Добавить метрики Prometheus (время цикла, rate матчей, ошибки API/Telegram).
-- Ввести A/B thresholds для подбора `MATCH_THRESHOLD`, `SEND_THRESHOLD`.
-- Добавить feedback-loop по кнопкам `Good/Bad` для авто-калибровки скоринга.
 
