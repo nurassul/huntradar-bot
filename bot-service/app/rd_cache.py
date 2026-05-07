@@ -12,6 +12,7 @@ import redis.asyncio as aioredis
 logger = logging.getLogger(__name__)
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
+TTL_SECONDS = 60 * 60 * 24 * 1
 
 
 # Глобальная переменная только в этом файле. Типо как final или const
@@ -27,7 +28,7 @@ async def get_redis() -> aioredis.Redis:
 
 
 # Тут сохраняем в Редис. Типо как история поиска.
-# Вакансии в редисе живут 3 дня. Потом удаляется.
+# Вакансии в редисе живут 1 день. Потом удаляется.
 # Сохраняется как по user_id.
 # Сохраняем только title, типо как description текст сообщения и ссылку на вакансию.
 async def save_to_history(user_id: int, title: str, message_text: str, url: str) -> None:
@@ -37,10 +38,8 @@ async def save_to_history(user_id: int, title: str, message_text: str, url: str)
 
         data = json.dumps({"title": title, "message_text": message_text, "url": url, }, ensure_ascii=False)
         await r.lpush(key, data)
-
         await r.ltrim(key, 0, 4)
-
-        await r.expire(key, 60 * 60 * 24 * 3)
+        await r.expire(key, TTL_SECONDS)
 
     except Exception as e:
         logging.error(f"Error saving history in Redis for user: {user_id}: {e}")

@@ -57,11 +57,11 @@ services:
       - ./data:/service/data
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
       kafka:
-        condition: service_healthy
+        condition: service_started
       redis:
-        condition: service_healthy
+        condition: service_started
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       HH_APP_TOKEN: ${HH_APP_TOKEN}
@@ -75,9 +75,9 @@ services:
     build: ./matcher-service
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
       kafka:
-        condition: service_healthy
+        condition: service_started
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       HH_APP_TOKEN: ${HH_APP_TOKEN}
@@ -88,9 +88,9 @@ services:
     build: ./bot-service
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_started
       kafka:
-        condition: service_healthy
+        condition: service_started
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       HH_APP_TOKEN: ${HH_APP_TOKEN}

@@ -37,8 +37,8 @@ def extract_skills_from_vacancy(raw_text: str) -> list[ExtractedSkill]:
     for sentence in sentences:
         weight = _detect_weight(sentence)
 
-        for cannonical_name, aliases in SKILLS_DICT.items():
-            if cannonical_name in found and found[cannonical_name].weight >= weight:
+        for skill_name, aliases in SKILLS_DICT.items():
+            if skill_name in found and found[skill_name].weight >= weight:
                 continue # Уже нашли с таким же или выше весом
 
             for alias in aliases:
@@ -46,9 +46,9 @@ def extract_skills_from_vacancy(raw_text: str) -> list[ExtractedSkill]:
                 pattern = r"(?<!\w)" + re.escape(alias) + r"(?!\w)"
                 if re.search(pattern, sentence):
                     # Опять проверка может мы до этого находили, но веса разные.
-                    if cannonical_name not in found or found[cannonical_name].weight < weight:
-                        found[cannonical_name] = ExtractedSkill(
-                            name=cannonical_name,
+                    if skill_name not in found or found[skill_name].weight < weight:
+                        found[skill_name] = ExtractedSkill(
+                            name=skill_name,
                             weight=weight,
                             context=sentence[:80]
                         )

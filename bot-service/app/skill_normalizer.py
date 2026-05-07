@@ -15,17 +15,17 @@ def extract_skills_from_user_input(raw_skills: list[str]) -> list[str]:
         normalized = normalize_text(raw)
         matched = False
 
-        for canonical_name, aliases in SKILLS_DICT.items():
+        for skill_name, aliases in SKILLS_DICT.items():
             for alias in aliases:
-                if alias in normalized or normalized in alias:
-                    if canonical_name not in result:
-                        result.append(canonical_name)
+                if alias == normalized:
+                    if skill_name not in result:
+                        result.append(skill_name)
                     matched = True
                     break
             if matched:
                 break
 
-        # Если не нашли в словаре — добавляем as-is (нормализованный)
+        # Если не нашли в словаре добавляем как есть
         if not matched and normalized:
             result.append(normalized)
 

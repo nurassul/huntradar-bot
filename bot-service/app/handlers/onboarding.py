@@ -132,7 +132,7 @@ async def send_last_vacancies(msg: Message):
     for vac in vacancies:
         text = (
             f"🔹 <b>{vac['title']}</b>\n"
-            f"📄 Description: {vac.get('message_text', 'Not found')}\n"
+            f"📄 Description:\n {vac.get('message_text', 'Not found')}\n\n"
             f"<a href='{vac['url']}'>Open vacancy</a>"
         )
         await msg.answer(text)
@@ -158,7 +158,7 @@ async def edit_skills_save(msg: Message, state: FSMContext):
     if ("," not in msg.text and " " in msg.text):
         await msg.answer(
             "😅 It seems you simply listed the skills separated by spaces.\n\n"
-            "Please use <b>commas!!!!!!</b> Do not break me!"
+            "Please use <b>commas!!!!!!</b> Do not break me!\n"
             "Rewrite the list again, separated by <b>COMMAS (,) </b>"
         )
 

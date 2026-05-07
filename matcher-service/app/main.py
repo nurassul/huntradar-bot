@@ -33,7 +33,7 @@ async def process_vacancy(raw_message: dict, producer: AIOKafkaProducer):
 
     combined_text = description + " " + " ".join(key_skills)
     vacancy_skills = extract_skills_from_vacancy(combined_text)
-    logger.info(f"[{vacancy_id}] '{title}' — найдено скиллов: {len(vacancy_skills)}")
+    logger.info(f"[{vacancy_id}] '{title}' — found skills: {len(vacancy_skills)}")
 
     for user_id in user_ids:
         user_skills = await get_user_skills(user_id)

@@ -6,8 +6,8 @@ import redis.asyncio as aioredis
 logger = logging.getLogger(__name__)
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
-# 7 дней не парсим одну вакансию дважды. Только один раз отправляем
-TTL_SECONDS = 60 * 60 * 24 * 7
+# 2 дня не парсим одну вакансию дважды. Только один раз отправляем
+TTL_SECONDS = 60 * 60 * 24 * 2
 
 _redis: aioredis.Redis | None = None
 
