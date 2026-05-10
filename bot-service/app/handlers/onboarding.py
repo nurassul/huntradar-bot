@@ -28,7 +28,7 @@ async def cmd_start(msg: Message, state: FSMContext):
     if skills:
         # Юзер уже регался и написал свои скиллы
         await msg.answer(
-            f"👋 Welcome back!\n\nТвои скиллы: {', '.join(skills)}",
+            f"👋 Welcome back!\n\nYour skills: {', '.join(skills)}",
             reply_markup=main_menu()
         )
         return
