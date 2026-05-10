@@ -116,6 +116,7 @@ async def save_user_query(user_id: int, search_query: str, area: str = "40") -> 
         await session.commit()
 
 
+
 # Функция для получения скиллов юзера по user_id
 async def get_user_skills(user_id: int) -> list[str]:
     async with AsyncSessionLocal() as session:
@@ -132,6 +133,15 @@ async def get_user_query(user_id: int) -> str | None:
                               UserQuery.is_active == True)
         return await session.scalar(stmt)
 
+async def get_user_query_area(user_id: int) -> str | None:
+    async with AsyncSessionLocal() as session:
+        stmt = select(UserQuery.area).where(
+            UserQuery.user_id == user_id,
+            UserQuery.is_active == True
+        )
+        return await session.scalar(stmt)
+
+
 
 async def toggle_notifications(user_id: int, active: bool) -> None:
     async with AsyncSessionLocal() as session:
@@ -142,6 +152,8 @@ async def toggle_notifications(user_id: int, active: bool) -> None:
         )
 
         await session.commit()
+
+
 
 
 

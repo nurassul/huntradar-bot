@@ -10,3 +10,4 @@ class OnboardingFSM(StatesGroup):
 class EditFSM(StatesGroup):
     waiting_new_skills = State()
     waiting_new_query = State()
+    waiting_new_area = State()

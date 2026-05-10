@@ -10,7 +10,7 @@ def main_menu() -> ReplyKeyboardMarkup:
         KeyboardButton(text="✏️ Change skills")
     )
     builder.row(
-        KeyboardButton(text="🔍 Change query"),
+        KeyboardButton(text="🔍 Change query & area"),
         KeyboardButton(text="🔔 Notifications")
     )
     builder.row(
@@ -23,10 +23,7 @@ def main_menu() -> ReplyKeyboardMarkup:
 def area_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
-        InlineKeyboardButton(text="Kazakhstan", callback_data="area:40"),
-        InlineKeyboardButton(text="🌍 Whole world", callback_data="area:all"),
-    )
-    builder.row(
+        InlineKeyboardButton(text="🇰🇿 Kazakhstan", callback_data="area:40"),
         InlineKeyboardButton(text="Russia", callback_data="area:113"),
     )
     return builder.as_markup()

@@ -7,7 +7,8 @@ from ..keyboards.kb import main_menu, area_keyboard
 from app.handlers.states import OnboardingFSM, EditFSM
 from ..skill_normalizer import extract_skills_from_user_input
 
-from app.db import register_user, save_user_query, save_user_skills, get_user_query, get_user_skills
+from app.db import register_user, save_user_query, save_user_skills, get_user_query, get_user_skills, \
+    get_user_query_area
 from ..rd_cache import get_history
 
 router = Router()
@@ -104,7 +105,7 @@ async def onboarding_area(callback: CallbackQuery, state: FSMContext):
     await save_user_query(callback.from_user.id, data["query"], area)
     await state.clear()
 
-    area_names = {"40": "Kazakhstan", "113": "Russia", "all": "The whole world"}
+    area_names = {"40": "Kazakhstan", "113": "Russia"}
     await callback.message.edit_text(
         f"🚀 <b>Everything is ready!</b>\n\n"
         f"Skills: {', '.join(data['skills'])}\n"
@@ -179,7 +180,7 @@ async def edit_skills_save(msg: Message, state: FSMContext):
 # ───────────────────────── Редактирование запроса ─────────────────────────
 
 # То же самое как в скиллах
-@router.message(F.text == "🔍 Change query")
+@router.message(F.text == "🔍 Change query & area")
 async def edit_query_start(msg: Message, state: FSMContext):
     current = await get_user_query(msg.from_user.id)
     await msg.answer(
@@ -196,9 +197,31 @@ async def edit_query_save(msg: Message, state: FSMContext):
         await msg.answer("Too short query!")
         return
 
-    await save_user_query(msg.from_user.id, query)
-    await state.clear()
+    current = await get_user_query_area(msg.from_user.id)
+    area_names = {"40": "Kazakhstan", "113": "Russia"}
+
+    await state.update_data(query=query)
     await msg.answer(
-        f"✅ Query updated: <b>{query}</b>",
+        f"✅ Query: <b>{query}</b>\n"
+        f"Current area: <b>{area_names[current] or 'not found'}</b>\n\nSelect new:",
+        reply_markup=area_keyboard()
+    )
+    await state.set_state(EditFSM.waiting_new_area)
+
+@router.callback_query(EditFSM.waiting_new_area, F.data.startswith("area:"))
+async def edit_area_save(callback: CallbackQuery, state: FSMContext):
+    area = callback.data.split(":")[1]
+    data = await state.get_data()
+    query = data['query']
+
+    await save_user_query(callback.from_user.id, query, area)
+    await state.clear()
+
+    area_names = {"40": "Kazakhstan", "113": "Russia"}
+    await callback.message.answer(
+        f"🚀 <b>Updated successfully</b>\n\n"
+        f"Query: {query}\n"
+        f"Region: {area_names.get(area, area)}\n\n",
         reply_markup=main_menu()
     )
+    await callback.answer()
