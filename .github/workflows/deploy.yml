@@ -18,7 +18,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             cd ~/huntradar-bot
-            git pull origin main
+            git pull
             docker-compose down
             docker-compose up --build -d
             docker image prune -f
