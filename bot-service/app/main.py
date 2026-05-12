@@ -40,6 +40,7 @@ async def main():
 
     logger.info("Bot Service запущен")
     try:
+
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
         sender_task.cancel()
