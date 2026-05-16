@@ -55,14 +55,14 @@ def score_vacancy(
     matched_weight = 0.0
 
     for vs in vacancy_skills:
-        total_weight += vs.weight
+        total_weight += vs.weight # считаем full вес всех скиллов из вакансии
         vacancy_vec = get_cached_embedding(vs.name)
 
         best_skill = None
         best_sim = 0.0
 
         for user_skill, user_vec in user_embeddings.items():
-            sim = cosine_similarity(vacancy_vec, user_vec)
+            sim = cosine_similarity(vacancy_vec, user_vec) # находим каждого скилла косинусную сходству
             if sim > best_sim:
                 best_sim = sim
                 best_skill = user_skill
@@ -71,7 +71,7 @@ def score_vacancy(
         is_matched = best_sim >= MATCH_THRESHOLD
 
         if is_matched:
-            matched_weight += vs.weight
+            matched_weight += vs.weight # если совпадает с требуем скиллом тогда плюсуем
 
         matches.append(SkillMatch(
             vacancy_skill=vs.name,
