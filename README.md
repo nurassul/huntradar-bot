@@ -73,7 +73,31 @@ HuntRadar Bot - это микросервисная система, котора
   - `created_at TIMESTAMPTZ`
   - Индекс `idx_user_queries_active` для быстрых выборок активных запросов.
 
-![img.png](img.png)
+```mermaid
+erDiagram
+    users ||--o{ user_skills : "has"
+    users ||--o{ user_queries : "makes"
+
+    users {
+        BIGINT user_id PK
+        VARCHAR(100) username
+        TIMESTAMPTZ created_at
+    }
+    
+    user_skills {
+        BIGINT user_id PK, FK
+        VARCHAR(100) skill PK
+    }
+    
+    user_queries {
+        SERIAL id PK
+        BIGINT user_id FK
+        VARCHAR(200) search_query
+        VARCHAR(10) area
+        BOOLEAN is_active
+        TIMESTAMPTZ created_at
+    }
+```
 
 ### 2.2 Логика хранения запросов
 
