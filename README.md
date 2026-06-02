@@ -7,7 +7,7 @@ HuntRadar Bot - это микросервисная система, котора
 - отправляет подходящие вакансии в Telegram.
 
 Проект состоит из трех основных микросервисов (`parser-service`, `matcher-service`, `bot-service`) и инфраструктуры (`PostgreSQL`, `Redis`, `Kafka`).
-Проект для Final Exam for Introduction to Programming 2 course
+
 
 ## 1. Архитектура
 
